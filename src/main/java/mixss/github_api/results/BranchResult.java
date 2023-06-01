@@ -2,14 +2,12 @@ package mixss.github_api.results;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class RepositoryResult {
+public class BranchResult {
     private String name;
-    private List<BranchResult> branches;
+    private String lastCommitSha;
 }

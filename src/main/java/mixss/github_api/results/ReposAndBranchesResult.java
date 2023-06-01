@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class RepositoryResult {
-    private String name;
-    private List<BranchResult> branches;
+public class ReposAndBranchesResult {
+    private String owner;
+    private List<RepositoryResult> repositories;
 }

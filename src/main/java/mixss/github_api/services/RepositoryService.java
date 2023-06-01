@@ -1,7 +1,10 @@
 package mixss.github_api.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import mixss.github_api.apiclients.BranchesFromRepoApiClient;
 import mixss.github_api.apiclients.ReposFromUserApiClient;
+import mixss.github_api.results.BranchResult;
+import mixss.github_api.results.ReposAndBranchesResult;
 import mixss.github_api.results.RepositoryResult;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +15,28 @@ import java.util.List;
 public class RepositoryService {
 
     private final ReposFromUserApiClient reposFromUserApiClient;
+    private final BranchesFromRepoApiClient branchesFromRepoApiClient;
 
-    public RepositoryService(ReposFromUserApiClient reposFromUserApiClient) {
+    public RepositoryService(ReposFromUserApiClient reposFromUserApiClient, BranchesFromRepoApiClient branchesFromRepoApiClient) {
         this.reposFromUserApiClient = reposFromUserApiClient;
+        this.branchesFromRepoApiClient = branchesFromRepoApiClient;
     }
 
-    public RepositoryResult getReposWithoutForks(String username) {
+    public ReposAndBranchesResult getReposWithoutForks(String username) {
+        List<ReposAndBranchesResult> result;
+
         List<String> reposList = getAllRepos(username);
-        return new RepositoryResult(username, reposList);
+        List<RepositoryResult> repositoryResults = new ArrayList<>();
+        for(String repo: reposList) {
+            List<BranchResult> branchList = getAllBranchesFromRepository(username, repo);
+            RepositoryResult repositoryResult = new RepositoryResult(repo, branchList);
+//            for(BranchResult br: branchList) {
+//                System.out.println(repo + ": {" + br.getName() + "} sha: {" + br.getLastCommitSha());
+//
+//            }
+            repositoryResults.add(repositoryResult);
+        }
+        return new ReposAndBranchesResult(username, repositoryResults);
     }
 
     private List<String> getAllRepos(String username) {
@@ -27,12 +44,26 @@ public class RepositoryService {
         try {
             JsonNode result = reposFromUserApiClient.getReposFromUser(username);
             for(JsonNode repoData : result) {
-                System.out.println(repoData.path("full_name"));
-                reposList.add(repoData.path("full_name").toString());
+                reposList.add(repoData.path("name").toString().replace("\"", ""));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return reposList;
+    }
+
+    private List<BranchResult> getAllBranchesFromRepository(String username, String repositoryName) {
+        List<BranchResult> branchList = new ArrayList<>();
+        try {
+            JsonNode result = branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName);
+            for(JsonNode branch: result) {
+                branchList.add(new BranchResult(
+                                branch.path("name").toString(),
+                                branch.path("commit").path("sha").toString()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return branchList;
     }
 }

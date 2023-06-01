@@ -1,5 +1,6 @@
 package mixss.github_api.controllers;
 
+import mixss.github_api.results.ReposAndBranchesResult;
 import mixss.github_api.results.RepositoryResult;
 import mixss.github_api.services.RepositoryService;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,7 @@ public class RepositoryController {
 
     @GetMapping("/repos/{username}")
     public ResponseEntity<String> getReposWithoutForks(@RequestHeader(HttpHeaders.ACCEPT) String acceptHeader, @PathVariable String username) {
-        RepositoryResult result = repositoryService.getReposWithoutForks(username);
+        ReposAndBranchesResult result = repositoryService.getReposWithoutForks(username);
         return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
     }
 }
