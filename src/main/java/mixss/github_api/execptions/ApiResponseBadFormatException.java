@@ -1,9 +1,11 @@
 package mixss.github_api.execptions;
 
-public class ApiResponseBadFormatException extends Exception{
+import org.springframework.http.HttpStatus;
+
+public class ApiResponseBadFormatException extends ApiException{
 
     // this exception is thrown when outside API returns data in changed/unsupported format
     public ApiResponseBadFormatException() {
-        super("Unable to provide data");
+        super("Unable to provide data", HttpStatus.NOT_IMPLEMENTED);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Collections;
 public abstract class ApiClient {
     // this abstract class implements call to an external api
 
-    public JsonNode makeCall(String url) throws ApiNotFoundException, ApiResponseBadFormatException, ApiErrorReposnseException {
+    public JsonNode makeCall(String url){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));

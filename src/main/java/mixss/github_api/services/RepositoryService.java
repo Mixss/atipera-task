@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RepositoryService {
@@ -35,28 +36,21 @@ public class RepositoryService {
 
     private List<String> getAllRepos(String username) {
         List<String> reposList = new ArrayList<>();
-        try {
-            JsonNode result = reposFromUserApiClient.getReposFromUser(username);
-            for(JsonNode repoData : result) {
+        JsonNode result = reposFromUserApiClient.getReposFromUser(username);
+        for(JsonNode repoData : result) {
+            if(Objects.equals(repoData.path("fork").toString(), "false"))
                 reposList.add(repoData.path("name").toString().replace("\"", ""));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return reposList;
     }
 
     private List<BranchResult> getAllBranchesFromRepository(String username, String repositoryName) {
         List<BranchResult> branchList = new ArrayList<>();
-        try {
-            JsonNode result = branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName);
-            for(JsonNode branch: result) {
-                branchList.add(new BranchResult(
-                                branch.path("name").toString().replace("\"", ""),
-                                branch.path("commit").path("sha").toString().replace("\"", "")));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        JsonNode result = branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName);
+        for(JsonNode branch: result) {
+            branchList.add(new BranchResult(
+                            branch.path("name").toString().replace("\"", ""),
+                            branch.path("commit").path("sha").toString().replace("\"", "")));
         }
         return branchList;
     }

@@ -1,7 +1,9 @@
 package mixss.github_api.execptions;
 
-public class ApiErrorReposnseException extends Exception{
+import org.springframework.http.HttpStatus;
+
+public class ApiErrorReposnseException extends ApiException{
     public ApiErrorReposnseException(String message) {
-        super(message);
+        super(message, HttpStatus.BAD_REQUEST);
     }
 }

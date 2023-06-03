@@ -1,5 +1,6 @@
 package mixss.github_api.controllers;
 
+import mixss.github_api.execptions.ApiNotFoundException;
 import mixss.github_api.results.ReposAndBranchesResult;
 import mixss.github_api.results.RepositoryResult;
 import mixss.github_api.services.RepositoryService;
@@ -21,8 +22,8 @@ public class RepositoryController {
     }
 
     @GetMapping("/repos/{username}")
-    public ResponseEntity<String> getReposWithoutForks(@RequestHeader(HttpHeaders.ACCEPT) String acceptHeader, @PathVariable String username) {
+    public ResponseEntity<ReposAndBranchesResult> getReposWithoutForks(@RequestHeader(HttpHeaders.ACCEPT) String acceptHeader, @PathVariable String username) {
         ReposAndBranchesResult result = repositoryService.getReposWithoutForks(username);
-        return new ResponseEntity<String>(result.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -41,7 +41,7 @@ class RepositoryServiceTest {
     }
 
     @Test
-    void getReposWithoutForks_ReturnsCorrectValue_WhenNoFork() throws ApiErrorReposnseException, ApiNotFoundException, ApiResponseBadFormatException, JsonProcessingException {
+    void getReposWithoutForks_ReturnsCorrectValue_WhenNoFork() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         when(reposFromUserApiClient.getReposFromUser(username)).thenReturn(mapper.readTree(reposApiResultNoFork));
         when(branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName)).thenReturn(mapper.readTree(repoApiResult));
@@ -55,7 +55,7 @@ class RepositoryServiceTest {
     }
 
     @Test
-    void getReposWithoutForks_ReturnsCorrectValue_WhenFork() throws ApiErrorReposnseException, ApiNotFoundException, ApiResponseBadFormatException, JsonProcessingException {
+    void getReposWithoutForks_ReturnsCorrectValue_WhenFork() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         when(reposFromUserApiClient.getReposFromUser(username)).thenReturn(mapper.readTree(reposApiResultFork));
         when(branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName)).thenReturn(mapper.readTree(repoApiResult));
