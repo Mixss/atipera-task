@@ -1,9 +1,6 @@
 package mixss.github_api.exceptionhandlers;
 
-import mixss.github_api.execptions.ApiErrorReposnseException;
-import mixss.github_api.execptions.ApiException;
-import mixss.github_api.execptions.ApiNotFoundException;
-import mixss.github_api.execptions.ApiWrongAcceptHeaderException;
+import mixss.github_api.execptions.*;
 import mixss.github_api.results.ErrorResult;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +20,7 @@ import java.lang.invoke.WrongMethodTypeException;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {
-            ApiNotFoundException.class, ApiErrorReposnseException.class, ApiErrorReposnseException.class,
+            ApiNotFoundException.class, ApiErrorReposnseException.class, ApiResponseBadFormatException.class,
             ApiWrongAcceptHeaderException.class})
     protected ResponseEntity<Object> handleException(RuntimeException e, WebRequest request) {
         if(!(e instanceof ApiException ae)) {
