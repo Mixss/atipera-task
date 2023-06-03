@@ -23,17 +23,11 @@ public class RepositoryService {
     }
 
     public ReposAndBranchesResult getReposWithoutForks(String username) {
-        List<ReposAndBranchesResult> result;
-
         List<String> reposList = getAllRepos(username);
         List<RepositoryResult> repositoryResults = new ArrayList<>();
         for(String repo: reposList) {
             List<BranchResult> branchList = getAllBranchesFromRepository(username, repo);
             RepositoryResult repositoryResult = new RepositoryResult(repo, branchList);
-//            for(BranchResult br: branchList) {
-//                System.out.println(repo + ": {" + br.getName() + "} sha: {" + br.getLastCommitSha());
-//
-//            }
             repositoryResults.add(repositoryResult);
         }
         return new ReposAndBranchesResult(username, repositoryResults);
@@ -58,8 +52,8 @@ public class RepositoryService {
             JsonNode result = branchesFromRepoApiClient.getBranchesFromRepo(username, repositoryName);
             for(JsonNode branch: result) {
                 branchList.add(new BranchResult(
-                                branch.path("name").toString(),
-                                branch.path("commit").path("sha").toString()));
+                                branch.path("name").toString().replace("\"", ""),
+                                branch.path("commit").path("sha").toString().replace("\"", "")));
             }
         } catch (Exception e) {
             e.printStackTrace();
