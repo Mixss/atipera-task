@@ -10,7 +10,7 @@
     </parent>
     <groupId>mixss</groupId>
     <artifactId>github_api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>github_api</name>
     <description>github_api</description>
     <properties>

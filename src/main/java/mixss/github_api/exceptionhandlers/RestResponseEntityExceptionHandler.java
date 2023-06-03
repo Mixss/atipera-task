@@ -33,7 +33,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @Override
     @ResponseBody
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        String result = String.format("{\n\t\"status\": %d,\n\t\"Message\": %s\n}", HttpStatus.NOT_ACCEPTABLE.value(), "Accept header not acceptable");
+        String result = String.format("{\n\t\"status\": %d,\n\t\"Message\": \"%s\"\n}", HttpStatus.NOT_ACCEPTABLE.value(), "Accept header not acceptable");
         return new ResponseEntity<>(result, HttpStatus.NOT_ACCEPTABLE);
     }
 }
